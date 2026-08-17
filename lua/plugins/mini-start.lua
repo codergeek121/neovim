@@ -45,10 +45,23 @@ local function random_proverb()
   return string.format(default_margin .. '%s · %s\n\n"%s"', p[1], p[2], p[3])
 end
 
+local function recent_or_builtin()
+  return function()
+    local recent = starter.sections.recent_files(3, true, false)()
+    if #recent > 0 and recent[1].action ~= '' then
+      return recent
+    else
+      local builtin = starter.sections.builtin_actions()
+      table.insert(builtin, 1, { name = 'Find file', action = 'Telescope find_files', section = 'Builtin actions' })
+      return builtin
+    end
+  end
+end
+
 starter.setup({
   header = waveASCII .. default_margin,
   items = {
-    starter.sections.recent_files(3, true, false),
+    recent_or_builtin()
   },
   content_hooks = {
     starter.gen_hook.aligning('center', 'center'),
