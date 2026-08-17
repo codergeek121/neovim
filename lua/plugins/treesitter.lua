@@ -50,3 +50,24 @@ vim.api.nvim_create_autocmd('PackChanged', {
     end
   end,
 })
+
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Goto definition' })
+vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = 'Goto references' })
+vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = 'Goto implementation' })
+
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code action' })
+vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format { async = true } end, { desc = 'Format buffer' })
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename' })
+vim.keymap.set(
+  'n',
+  '<leader>cx',
+  function()
+    vim.lsp.buf.code_action {
+      context = { only = { 'source.fixAll' } },
+      apply = true,
+    }
+  end,
+  { desc = 'Fix all (quickfixes)' }
+)
+
+vim.keymap.set('v', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code action (visual)' })

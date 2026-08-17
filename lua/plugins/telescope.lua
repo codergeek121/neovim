@@ -17,8 +17,6 @@ pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ui-select')
 
 local builtin = require 'telescope.builtin'
-vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Find Files' })
-vim.keymap.set('n', '<leader>f', builtin.live_grep, { desc = 'Grep' })
 
 
 vim.api.nvim_create_autocmd('PackChanged', {
@@ -33,3 +31,10 @@ vim.api.nvim_create_autocmd('PackChanged', {
     end
   end,
 })
+
+vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { desc = 'Grep' })
+vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<cr>', { desc = 'Buffers' })
+vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', { desc = 'Help tags' })
+vim.keymap.set('n', '<leader>fr', '<cmd>Telescope oldfiles<cr>', { desc = 'Recent files' })
+vim.keymap.set('n', '<leader>fw', '<cmd>Telescope grep_string<cr>', { desc = 'Grep word under cursor' })
