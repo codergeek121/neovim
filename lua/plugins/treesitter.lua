@@ -5,11 +5,18 @@ do
     { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'ruby', 'typescript', 'javascript', 'elixir' }
   require('nvim-treesitter').install(parsers)
 
+  -- Treesitter's indent queries misbehave while typing (e.g. Ruby dedents
+  -- when typing `.` mid-edit: https://github.com/tree-sitter/tree-sitter-ruby/issues/230),
+  -- so fall back to the filetype's native indentexpr for these languages.
+  local indent_blocklist = { ruby = true }
+
   ---@param buf integer
   ---@param language string
   local function treesitter_try_attach(buf, language)
     if not vim.treesitter.language.add(language) then return end
     vim.treesitter.start(buf, language)
+
+    if indent_blocklist[language] then return end
 
     local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
 
